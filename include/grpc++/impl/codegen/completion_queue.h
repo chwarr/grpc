@@ -87,10 +87,10 @@ class BlockingUnaryCallImpl;
 
 extern CoreCodegenInterface* g_core_codegen_interface;
 
-/// A thin wrapper around \ref grpc_completion_queue (see \ref
-/// src/core/lib/surface/completion_queue.h).
-/// See \ref doc/cpp/perf_notes.md for notes on best practices for high
-/// performance servers.
+/// A thin wrapper around \ref grpc_completion_queue (see
+/// src/core/lib/surface/completion_queue.h ). See \ref
+/// doc/cpp/perf_notes.md for notes on best practices for high performance
+/// servers.
 class CompletionQueue : private GrpcLibraryCodegen {
  public:
   /// Default constructor. Implicitly creates a \a grpc_completion_queue
@@ -146,9 +146,9 @@ class CompletionQueue : private GrpcLibraryCodegen {
   /// within the \a deadline).  A \a tag points to an arbitrary location usually
   /// employed to uniquely identify an event.
   ///
-  /// \param tag[out] Upon sucess, updated to point to the event's tag.
-  /// \param ok[out] Upon sucess, true if read a regular event, false otherwise.
-  /// \param deadline[in] How long to block in wait for an event.
+  /// \param[out] tag Upon sucess, updated to point to the event's tag.
+  /// \param[out] ok Upon sucess, true if read a regular event, false otherwise.
+  /// \param[in] deadline How long to block in wait for an event.
   ///
   /// \return The type of event read.
   template <typename T>
@@ -160,8 +160,8 @@ class CompletionQueue : private GrpcLibraryCodegen {
   /// Read from the queue, blocking until an event is available or the queue is
   /// shutting down.
   ///
-  /// \param tag[out] Updated to point to the read event's tag.
-  /// \param ok[out] true if read a regular event, false otherwise.
+  /// \param[out] tag Updated to point to the read event's tag.
+  /// \param[out] ok true if read a regular event, false otherwise.
   ///
   /// \return true if read a regular event, false if the queue is shutting down.
   bool Next(void** tag, bool* ok) {

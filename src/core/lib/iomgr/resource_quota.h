@@ -24,7 +24,7 @@
 #include "src/core/lib/debug/trace.h"
 #include "src/core/lib/iomgr/exec_ctx.h"
 
-/** \file Tracks resource usage against a pool.
+/** \file iomgr/resource_quota.h Tracks resource usage against a pool.
 
     The current implementation tracks only memory usage, but in the future
     this may be extended to (for example) threads and file descriptors.

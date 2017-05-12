@@ -129,8 +129,7 @@ typedef struct {
   grpc_arg* args;
 } grpc_channel_args;
 
-/** \defgroup grpc_arg_keys
- * Channel argument keys.
+/** \defgroup grpc_arg_keys Channel argument keys
  * \{
  */
 /** If non-zero, enable census for tracing and stats collection. */

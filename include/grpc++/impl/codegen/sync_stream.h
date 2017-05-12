@@ -88,7 +88,7 @@ class ReaderInterface {
   virtual bool NextMessageSize(uint32_t* sz) = 0;
 
   /// Block to read a message and parse to \a msg. Returns \a true on success.
-  /// This is thread-safe with respect to \a Write or \WritesDone methods on
+  /// This is thread-safe with respect to \a Write or \a WritesDone methods on
   /// the same stream. It should not be called concurrently with another \a
   /// Read on the same stream as the order of delivery will not be defined.
   ///

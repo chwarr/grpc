@@ -21,8 +21,8 @@
 
 #include "src/core/ext/filters/client_channel/subchannel.h"
 
-/** \file Provides an index of active subchannels so that they can be
-    shared amongst channels */
+/** \file subchannel_index.h Provides an index of active subchannels so that
+    they can be shared amongst channels */
 
 /** Create a key that can be used to uniquely identify a subchannel */
 grpc_subchannel_key* grpc_subchannel_key_create(
