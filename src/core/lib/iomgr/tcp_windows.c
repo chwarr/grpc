@@ -54,6 +54,7 @@
 #include "src/core/lib/iomgr/tcp_client.h"
 #include "src/core/lib/iomgr/timer.h"
 #include "src/core/lib/slice/slice_internal.h"
+#include "src/core/lib/slice/slice_string_helpers.h"
 
 #if defined(__MSYS__) && defined(GPR_ARCH_64)
 /* Nasty workaround for nasty bug when using the 64 bits msys compiler
@@ -62,6 +63,8 @@
 #else
 #define GRPC_FIONBIO FIONBIO
 #endif
+
+grpc_tracer_flag grpc_tcp_trace = GRPC_TRACER_INITIALIZER(false);
 
 static grpc_error *set_non_block(SOCKET sock) {
   int status;
@@ -173,6 +176,10 @@ static void on_read(grpc_exec_ctx *exec_ctx, void *tcpp, grpc_error *error) {
   GRPC_ERROR_REF(error);
 
   if (error == GRPC_ERROR_NONE) {
+      if (GRPC_TRACER_ON(grpc_tcp_trace)) {
+          gpr_log(GPR_DEBUG, "read: error=%u", info->wsa_error);
+      }
+
     if (info->wsa_error != 0 && !tcp->shutting_down) {
       char *utf8_message = gpr_format_message(info->wsa_error);
       error = GRPC_ERROR_CREATE_FROM_COPIED_STRING(utf8_message);
@@ -182,6 +189,12 @@ static void on_read(grpc_exec_ctx *exec_ctx, void *tcpp, grpc_error *error) {
       if (info->bytes_transfered != 0 && !tcp->shutting_down) {
         sub = grpc_slice_sub_no_ref(tcp->read_slice, 0, info->bytes_transfered);
         grpc_slice_buffer_add(tcp->read_slices, sub);
+
+        if (GRPC_TRACER_ON(grpc_tcp_trace)) {
+          char *dump = grpc_dump_slice(sub, GPR_DUMP_HEX | GPR_DUMP_ASCII);
+          gpr_log(GPR_DEBUG, "READ %p (peer=%s): %s", tcp, tcp->peer_string, dump);
+          gpr_free(dump);
+        }
       } else {
         grpc_slice_unref_internal(exec_ctx, tcp->read_slice);
         error = tcp->shutting_down

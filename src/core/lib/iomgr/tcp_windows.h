@@ -44,8 +44,11 @@
    otherwise specified.
 */
 
+#include "src/core/lib/debug/trace.h"
 #include "src/core/lib/iomgr/endpoint.h"
 #include "src/core/lib/iomgr/socket_windows.h"
+
+extern grpc_tracer_flag grpc_tcp_trace;
 
 /* Create a tcp endpoint given a winsock handle.
  * Takes ownership of the handle.
